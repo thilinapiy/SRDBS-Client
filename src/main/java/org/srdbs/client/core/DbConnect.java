@@ -17,24 +17,17 @@ public class DbConnect {
 
     public static Logger logger = Logger.getLogger("systemsLog");
 
-    private Connection connect() {
+    private Connection connect() throws Exception {
 
-        Connection conn = null;
-        try {
-
-            Class.forName(Global.dbDriver).newInstance();
-            Global.dbURL = "jdbc:mysql://" + Global.dbIPAddress + ":" + Global.dbPort + "/";
-            conn = DriverManager.getConnection(Global.dbURL
-                    + Global.dbName, Global.dbUserName, Global.dbPassword);
-            logger.info("Connected to the database");
-        } catch (Exception e) {
-            logger.error("Database connection error : " + e);
-        }
-
+        Class.forName(Global.dbDriver).newInstance();
+        Global.dbURL = "jdbc:mysql://" + Global.dbIPAddress + ":" + Global.dbPort + "/";
+        Connection conn = DriverManager.getConnection(Global.dbURL
+                + Global.dbName, Global.dbUserName, Global.dbPassword);
+        logger.info("Connected to the database");
         return conn;
     }
 
-    public void initializeDB(){
+    public void initializeDB() throws Exception {
 
         DbConnect dbCon = new DbConnect();
         dbCon.updateQuery("DROP TABLE IF EXISTS sp_File");
@@ -59,26 +52,19 @@ public class DbConnect {
         //dbCon.updateQuery("");
     }
 
-    public boolean updateQuery(String query) {
+    public int updateQuery(String query) throws Exception {
 
         Connection conn = connect();
-        Statement s = null;
-        try {
-            s = conn.createStatement();
-            s.executeUpdate(query);
-            s.close();
-            return true;
-
-        } catch (Exception e) {
-            logger.error("Error on update sql query : " + query);
-            return false;
-        }
+        Statement s = conn.createStatement();
+        int ret = s.executeUpdate(query);
+        s.close();
+        return ret;
     }
-    
+
     public void testDbConnect() throws Exception {
-        
+
         Connection con = connect();
         con.close();
-        
+
     }
 }

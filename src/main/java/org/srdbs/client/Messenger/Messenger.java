@@ -3,7 +3,6 @@ package org.srdbs.client.Messenger;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.log4j.Logger;
-import org.srdbs.client.core.DbConnect;
 import org.srdbs.client.core.Global;
 
 import javax.jms.*;
@@ -85,17 +84,17 @@ public class Messenger implements MessageListener {
         String delimiter = ":";
         temp = messageText.split(delimiter);
 
-        if (temp[0].equalsIgnoreCase("init")) {
-            new DbConnect().initializeDB();
-            return "Database initialized successfully.";
+        switch (temp[0]) {
 
-        } else if (temp[0].equalsIgnoreCase("data")) {
+            case "init":
+                return MessageHandler.handleInit();
 
-            return "Receive database details : " + temp[1];
-        } else {
-
-            return "Response to '" + messageText + "'";
+            case "":
+                return "";
+            default:
+                return "Undefined request.";
         }
+
     }
 
 }

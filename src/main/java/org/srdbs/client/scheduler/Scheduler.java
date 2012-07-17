@@ -25,13 +25,10 @@ public class Scheduler {
 
         try {
             org.quartz.Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-
             scheduler.start();
-
             JobDetail job = newJob(RunJob.class)
                     .withIdentity("Backup validation Job", "Daily backup group")
                     .build();
-
 
             Trigger trigger = newTrigger()
                     .withIdentity("Backup validation trigger", "Daily backup group")
