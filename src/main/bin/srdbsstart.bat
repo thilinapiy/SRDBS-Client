@@ -1,1 +1,1 @@
-java -jar -DSRDBS_HOME=%SRDBS_HOME% %SRDBS_HOME%\lib\SRDBS-Client-${project.version}-jar-with-dependencies.jar
+java -jar -DSRDBSCLIENT_HOME=%SRDBSCLIENT_HOME% %SRDBSCLIENT_HOME%\lib\SRDBS-Client-${project.version}-jar-with-dependencies.jar

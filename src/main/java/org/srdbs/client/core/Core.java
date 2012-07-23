@@ -25,11 +25,11 @@ public class Core {
 
 
         Global.fs = System.getProperty("file.separator");
-        Global.systemHome = System.getenv("SRDBS_HOME"); // get the current working directory
-        System.out.println("System SRDBS_HOME path is set to : " + Global.systemHome);
+        Global.systemHome = System.getenv("SRDBSCLIENT_HOME"); // get the current working directory
+        System.out.println("System SRDBSCLIENT_HOME path is set to : " + Global.systemHome);
 
         if (Global.systemHome == null) {
-            System.out.println("Set the environment variable \"SRDBS_HOME\" and rerun the system.");
+            System.out.println("Set the environment variable \"SRDBSCLIENT_HOME\" and rerun the system.");
             System.exit(-1);
         } else {
             Global.sysConfigPath = Global.systemHome + Global.fs + "config" + Global.fs + "sysconfig.conf";

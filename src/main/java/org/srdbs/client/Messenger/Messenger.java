@@ -69,6 +69,7 @@ public class Messenger implements MessageListener {
                 TextMessage txtMsg = (TextMessage) message;
                 String messageText = txtMsg.getText();
                 response.setText(handleRequest(messageText));
+                logger.info("Message received from : " + message.getJMSReplyTo());
             }
             response.setJMSCorrelationID(message.getJMSCorrelationID());
             producer.send(message.getJMSReplyTo(), response);
@@ -89,8 +90,9 @@ public class Messenger implements MessageListener {
             case "init":
                 return MessageHandler.handleInit();
 
-            case "":
-                return "";
+            case "request":
+                return "Request receive.";
+
             default:
                 return "Undefined request.";
         }

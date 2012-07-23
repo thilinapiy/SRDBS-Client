@@ -29,15 +29,15 @@ Installation
         variable as
 
         in Windows
-            > set SRDBS_HOME=<path to the installation>
-                 eg: SRDBS_HOME=C:\Users\Thilina\Desktop\SRDBS-${project.version}
-            > set path=%SRDBS_HOME%\bin;%PATH%
+            > set SRDBSCLIENT_HOME=<path to the installation>
+                 eg: SRDBSCLIENT_HOME=C:\Users\Thilina\Desktop\SRDBS-${project.version}
+            > set path=%SRDBSCLIENT_HOME%\bin;%PATH%
 
         in Linux
 
-            $ export SRDBS_HOME=<path to the installation>
-                eg: export SRDBS_HOME=/home/thilina/SRDBS-${project.version}
-            $ export PATH=$SRDBS_HOME/bin:$PATH
+            $ export SRDBSCLIENT_HOME=<path to the installation>
+                eg: export SRDBSCLIENT_HOME=/home/thilina/SRDBS-${project.version}
+            $ export PATH=$SRDBSCLIENT_HOME/bin:$PATH
 
     Create MySQL database
 
