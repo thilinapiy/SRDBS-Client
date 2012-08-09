@@ -22,6 +22,19 @@ public class MessageHandler {
         }
     }
 
+    public static String handleUpload(String type, String data) {
+
+        String msg = "";
+        if (type.equalsIgnoreCase("full")) {
+            msg = "Full file update received : " + data;
+        }
+
+        if (type.equalsIgnoreCase("sp")) {
+            msg = "SP file update received : " + data;
+        }
+        return msg;
+    }
+
     public static void handleData() {
 
     }

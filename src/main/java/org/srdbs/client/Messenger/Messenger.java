@@ -69,10 +69,13 @@ public class Messenger implements MessageListener {
                 TextMessage txtMsg = (TextMessage) message;
                 String messageText = txtMsg.getText();
                 response.setText(handleRequest(messageText));
-                logger.info("Message received from : " + message.getJMSReplyTo());
+                logger.info("Message received : " + ((TextMessage) message).getText()
+                        + " from : " + message.getJMSReplyTo());
             }
             response.setJMSCorrelationID(message.getJMSCorrelationID());
             producer.send(message.getJMSReplyTo(), response);
+            logger.info("Send respond : " + response.getText()
+                    + " to : " + message.getJMSReplyTo());
 
         } catch (JMSException e) {
             e.printStackTrace();
@@ -81,22 +84,38 @@ public class Messenger implements MessageListener {
 
     public String handleRequest(String messageText) {
 
+        String msg = "";
         String[] temp;
         String delimiter = ":";
         temp = messageText.split(delimiter);
 
-        switch (temp[0]) {
+        switch (temp[0].toLowerCase().trim()) {
 
             case "init":
-                return MessageHandler.handleInit();
+                msg = MessageHandler.handleInit();
+                break;
 
-            case "request":
-                return "Request receive.";
+            case "status":
+                msg = "System is alive.";
+                break;
+
+            case "upload":
+                if (!(temp.length == 3)) {
+                    msg = "Message is not in the format of - upload:[full/sp]:<data>";
+                } else {
+                    msg = MessageHandler.handleUpload(temp[1], temp[2]);
+                }
+                break;
+
+            case "delete":
+                msg = "Not implement.";
+                break;
 
             default:
-                return "Undefined request.";
+                msg = "Undefined request.";
         }
 
+        return msg;
     }
 
 }
