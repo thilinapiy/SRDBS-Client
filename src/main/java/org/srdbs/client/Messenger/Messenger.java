@@ -78,7 +78,7 @@ public class Messenger implements MessageListener {
                     + " to : " + message.getJMSReplyTo());
 
         } catch (JMSException e) {
-            e.printStackTrace();
+            logger.error("Error occurred while receiving the message : " + e);
         }
     }
 
@@ -101,14 +101,15 @@ public class Messenger implements MessageListener {
 
             case "upload":
                 if (!(temp.length == 3)) {
-                    msg = "Message is not in the format of - upload:[full/sp]:<data>";
+                    msg = "Message is not in the format of - upload:[full/sp]:<data>. "
+                            + "Message was : " + temp[2] + ":" + temp[3];
                 } else {
                     msg = MessageHandler.handleUpload(temp[1], temp[2]);
                 }
                 break;
 
             case "delete":
-                msg = "Not implement.";
+                msg = MessageHandler.handleDelete(Integer.valueOf(temp[1]));
                 break;
 
             default:
