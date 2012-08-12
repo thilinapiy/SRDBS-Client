@@ -112,6 +112,10 @@ public class Messenger implements MessageListener {
                 msg = MessageHandler.handleDelete(Integer.valueOf(temp[1]));
                 break;
 
+            case "validate":
+                msg = MessageHandler.handleValidate(Integer.valueOf(temp[1]));
+                break;
+
             default:
                 msg = "Undefined request.";
         }

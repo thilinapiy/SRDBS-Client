@@ -109,5 +109,17 @@ public class MessageHandler {
 
     }
 
+    /* This method will check the integrity of uploaded file.
+     *
+     *
+     */
+    public static String handleValidate(int fid) {
 
+        String msg = "";
+        // validate hash values of files and values from the database.
+
+
+        return msg;
+
+    }
 }
