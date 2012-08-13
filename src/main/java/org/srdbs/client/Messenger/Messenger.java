@@ -87,39 +87,38 @@ public class Messenger implements MessageListener {
         String msg = "";
         String[] temp;
         String delimiter = ":";
-        temp = messageText.split(delimiter);
+        try {
+            temp = messageText.split(delimiter);
 
-        switch (temp[0].toLowerCase().trim()) {
+            switch (temp[0].toLowerCase().trim()) {
 
-            case "init":
-                msg = MessageHandler.handleInit();
-                break;
+                case "init":
+                    msg = MessageHandler.handleInit();
+                    break;
 
-            case "status":
-                msg = "System is alive.";
-                break;
+                case "status":
+                    msg = "System is alive.";
+                    break;
 
-            case "upload":
-                if (!(temp.length == 3)) {
-                    msg = "Message is not in the format of - upload:[full/sp]:<data>. "
-                            + "Message was : " + temp[2] + ":" + temp[3];
-                } else {
-                    msg = MessageHandler.handleUpload(temp[1], temp[2]);
-                }
-                break;
+                case "upload":
+                    msg = MessageHandler.handleUpload(temp[1], Integer.valueOf(temp[2]), temp[3]);
+                    break;
 
-            case "delete":
-                msg = MessageHandler.handleDelete(Integer.valueOf(temp[1]));
-                break;
+                case "delete":
+                    msg = MessageHandler.handleDelete(Integer.valueOf(temp[1]));
+                    break;
 
-            case "validate":
-                msg = MessageHandler.handleValidate(Integer.valueOf(temp[1]));
-                break;
+                case "validate":
+                    msg = MessageHandler.handleValidate(Integer.valueOf(temp[1]));
+                    break;
 
-            default:
-                msg = "Undefined request.";
+                default:
+                    msg = "Undefined request.";
+            }
+
+        } catch (Exception e) {
+            logger.error("Exception while processing the message  receive from the server: " + e);
         }
-
         return msg;
     }
 

@@ -25,9 +25,9 @@ public class MessageHandler {
         }
     }
 
-    public static String handleUpload(String type, String data) {
+    public static String handleUpload(String type, int nRows, String data) {
 
-        String msg = "";
+        String msg = "Upload handler : ";
         if (type.equalsIgnoreCase("full")) {
 
             String[] temp;
@@ -52,32 +52,40 @@ public class MessageHandler {
                 msg = "Full file update received but not insert in to database.";
                 logger.error(msg + " : " + e);
             }
-        }
 
-        if (type.equalsIgnoreCase("sp")) {
+        } else if (type.equalsIgnoreCase("sp")) {
 
-            String[] temp;
-            String delimiter = ",";
-            temp = data.split(delimiter);
+            msg = "SP_FILE SP_FID : ";
 
-            int spFId = Integer.valueOf(temp[0]);
-            int fid = Integer.valueOf(temp[1]);
-            String spFileName = temp[2];
-            long fileSize = Long.valueOf(temp[3]);
-            String hashValue = temp[4];
-            int refCloudId = Integer.valueOf(temp[5]);
-            int raidRef = Integer.valueOf(temp[6]);
-            String remPath = temp[7];
+            String[] rows;
+            String delimiter = ";";
+            rows = data.split(delimiter);
 
-            try {
-                new DbConnect().insertToSpFile(spFId, fid, spFileName, fileSize, hashValue, refCloudId, raidRef, remPath);
-                msg = "Split file update received and insert to the database. SPFID is : " + spFId;
-                logger.info(msg);
+            for (int i = 0; i < nRows; i++) {
 
-            } catch (Exception e) {
-                msg = "Split file update received but not insert in to database. SPFID is : " + spFId;
-                logger.error(msg + " : " + e);
+                String[] temp;
+                delimiter = ",";
+                temp = rows[i].split(delimiter);
+
+                int spFId = Integer.valueOf(temp[0]);
+                int fid = Integer.valueOf(temp[1]);
+                String spFileName = temp[2];
+                long fileSize = Long.valueOf(temp[3]);
+                String hashValue = temp[4];
+                int refCloudId = Integer.valueOf(temp[5]);
+                int raidRef = Integer.valueOf(temp[6]);
+                String remPath = temp[7];
+
+                try {
+                    new DbConnect().insertToSpFile(spFId, fid, spFileName, fileSize, hashValue, refCloudId, raidRef, remPath);
+                    msg += spFId + ", ";
+
+                } catch (Exception e) {
+                    msg += " Error on : " + spFId;
+                    logger.error("Error inserting SP_FID : " + e);
+                }
             }
+            logger.info(msg);
         }
         return msg;
     }
@@ -115,7 +123,7 @@ public class MessageHandler {
      */
     public static String handleValidate(int fid) {
 
-        String msg = "";
+        String msg = "Validation is not implemented.";
         // validate hash values of files and values from the database.
 
 
