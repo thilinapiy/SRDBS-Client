@@ -6,33 +6,33 @@ GRANT ALL PRIVILEGES ON srdbsclientdb.* TO 'srdbsclient'@'127.0.0.1' IDENTIFIED 
 
 USE srdbsclientdb;
 
-DROP TABLE sp_File;
-DROP TABLE full_File;
+DROP TABLE SP_FILE;
+DROP TABLE FULL_FILE;
 
-DROP TABLE sp_File;
-DROP TABLE full_File;
+DROP TABLE SP_FILE;
+DROP TABLE FULL_FILE;
 
-CREATE TABLE full_file(
+CREATE TABLE FULL_FILE(
 	F_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	FName VARCHAR(100),
-	FSize BIGINT,
-	HashValue VARCHAR(100),
-	Up_Date VARCHAR(100)
+	FNAME VARCHAR(100),
+	FSIZE BIGINT,
+	HASHVALUE VARCHAR(100),
+	UP_DATE VARCHAR(100)
 );
 
 
-Create Table Sp_File(
-    SP_FILE_ID int not null auto_increment,
-    F_ID int,
-    SP_FileName varchar(400),
-    F_SIZE Bigint,
-    HashValue varchar(200),
-    Ref_Cloud_ID int,
-    Raid_Ref int,
-    Remote_path varchar(400),
+CREATE TABLE SP_FILE(
+    SP_FILE_ID INT NOT NULL AUTO_INCREMENT,
+    F_ID INT,
+    SP_FILENAME VARCHAR(400),
+    F_SIZE BIGINT,
+    HASHVALUE VARCHAR(200),
+    REF_CLOUD_ID INT,
+    RAID_REF INT,
+    REMOTE_PATH VARCHAR(400),
 
-    Constraint Pk_SP_FileID_1 Primary key(SP_FILE_ID),
-    Constraint FK_SP_FileID_2 Foreign key (F_ID) References Full_File (F_ID)
+    CONSTRAINT PK_SP_FILEID_1 PRIMARY KEY(SP_FILE_ID),
+    CONSTRAINT FK_SP_FILEID_2 FOREIGN KEY (F_ID) REFERENCES FULL_FILE (F_ID)
 );
 
-SELECT  * from Sp_File; SELECT  * from full_file;
+SELECT  * FROM SP_FILE; SELECT  * FROM FULL_FILE;

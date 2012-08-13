@@ -31,25 +31,25 @@ public class DbConnect {
     public void initializeDB() throws Exception {
 
         DbConnect dbCon = new DbConnect();
-        dbCon.updateQuery("DROP TABLE IF EXISTS sp_File");
-        dbCon.updateQuery("DROP TABLE IF EXISTS full_File");
-        dbCon.updateQuery("CREATE TABLE full_file(" +
+        dbCon.updateQuery("DROP TABLE IF EXISTS SP_FILE");
+        dbCon.updateQuery("DROP TABLE IF EXISTS FULL_FILE");
+        dbCon.updateQuery("CREATE TABLE FULL_FILE(" +
                 "F_ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-                "FName VARCHAR(100)," +
-                "FSize BIGINT," +
-                "HashValue VARCHAR(100)," +
-                "Up_Date VARCHAR(100))");
-        dbCon.updateQuery("Create Table Sp_File(" +
-                "SP_FILE_ID int not null auto_increment," +
-                "F_ID int," +
-                "SP_FileName varchar(400)," +
-                "F_SIZE Bigint," +
-                "HashValue varchar(200)," +
-                "Ref_Cloud_ID int," +
-                "Raid_Ref int," +
-                "Remote_path varchar(400)," +
-                "Constraint Pk_SP_FileID_1 Primary key(SP_FILE_ID)," +
-                "Constraint FK_SP_FileID_2 Foreign key (F_ID) References Full_File (F_ID))");
+                "FNAME VARCHAR(100)," +
+                "FSIZE BIGINT," +
+                "HASHVALUE VARCHAR(100)," +
+                "UP_DATE VARCHAR(100))");
+        dbCon.updateQuery("CREATE TABLE SP_FILE(" +
+                "SP_FILE_ID INT NOT NULL AUTO_INCREMENT," +
+                "F_ID INT," +
+                "SP_FILENAME VARCHAR(400)," +
+                "F_SIZE BIGINT," +
+                "HASHVALUE VARCHAR(200)," +
+                "REF_CLOUD_ID INT," +
+                "RAID_REF INT," +
+                "REMOTE_PATH VARCHAR(400)," +
+                "CONSTRAINT PK_SP_FILEID_1 PRIMARY KEY(SP_FILE_ID)," +
+                "CONSTRAINT FK_SP_FILEID_2 FOREIGN KEY (F_ID) REFERENCES FULL_FILE (F_ID))");
         //dbCon.updateQuery("");
     }
 
@@ -72,8 +72,8 @@ public class DbConnect {
     public void insertToFullFile(int fid, String fileName, long fileSize,
                                  String hashValue, String upDate) throws Exception {
 
-        String sql = "insert into Full_file (F_ID,FName,FSize,HashValue,Up_Date) values (?,?,?,?,?)" +
-                "ON DUPLICATE KEY UPDATE F_ID = ?, FName = ?,FSize = ?, HashValue =? ,Up_Date = ?";
+        String sql = "INSERT INTO FULL_FILE (F_ID,FNAME,FSIZE,HASHVALUE,UP_DATE) VALUES (?,?,?,?,?)" +
+                "ON DUPLICATE KEY UPDATE F_ID = ?, FNAME = ?,FSIZE = ?, HASHVALUE =? ,UP_DATE = ?";
         Connection connection = connect();
         PreparedStatement ps = connection.prepareStatement(sql);
 
@@ -98,9 +98,9 @@ public class DbConnect {
     public void insertToSpFile(int spFId, int fid, String spFileName, long fileSize,
                                String hashValue, int refCloudId, int raidRef, String remPath) throws Exception {
 
-        String sql = "insert into Sp_file (SP_FILE_ID, F_ID, SP_FileName, F_SIZE, HashValue, Ref_Cloud_ID, Raid_Ref,"
-                + "Remote_path ) values (?,?,?,?,?,?,?,?) ON DUPLICATE KEY  UPDATE SP_FILE_ID = ?, F_ID = ?,"
-                + "SP_FileName = ?, F_Size = ?, HashValue =? ,Ref_Cloud_ID = ?, Raid_Ref = ?, Remote_path = ?";
+        String sql = "INSERT INTO SP_FILE (SP_FILE_ID, F_ID, SP_FILENAME, F_SIZE, HASHVALUE, REF_CLOUD_ID, RAID_REF,"
+                + "REMOTE_PATH ) VALUES (?,?,?,?,?,?,?,?) ON DUPLICATE KEY  UPDATE SP_FILE_ID = ?, F_ID = ?,"
+                + "SP_FILENAME = ?, F_SIZE = ?, HASHVALUE =? ,REF_CLOUD_ID = ?, RAID_REF = ?, REMOTE_PATH = ?";
 
         Connection connection = connect();
         PreparedStatement ps = connection.prepareStatement(sql);
@@ -132,8 +132,8 @@ public class DbConnect {
 
     public void deleteFileDataFromDB(int fid) throws Exception {
 
-        String spSql = "DELETE FROM sp_file where F_ID = ?";
-        String fullSql = "DELETE FROM sp_file where F_ID = ?";
+        String spSql = "DELETE FROM SP_FILE WHERE F_ID = ?";
+        String fullSql = "DELETE FROM SP_FILE WHERE F_ID = ?";
 
         Connection connection = connect();
 
