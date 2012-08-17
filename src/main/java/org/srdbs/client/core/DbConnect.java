@@ -1,11 +1,16 @@
 package org.srdbs.client.core;
 
 import org.apache.log4j.Logger;
+import org.srdbs.client.split.MYSpFile;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.*;
 
 /**
  * Secure and Redundant Data Backup System.
@@ -149,4 +154,46 @@ public class DbConnect {
 
         connection.close();
     }
+
+    public List<MYSpFile> selectQuery(int fid) throws Exception {
+
+        String sql = " select SP_FileName,HashValue from sp_file where F_ID=" + fid + "";
+        Connection connection = connect();
+        Statement s = connection.createStatement();
+        ResultSet rs = s.executeQuery(sql);
+        List<MYSpFile> fileList = new ArrayList<MYSpFile>();
+
+        while (rs.next()) {
+            MYSpFile myspFile = new MYSpFile();
+            myspFile.setName(rs.getString("SP_FileName"));
+            myspFile.setHash(rs.getString("HashValue"));
+            fileList.add(myspFile);
+        }
+        return fileList;
+    }
+
+    public List<MYSpFile> LoadSpQueryRemotePath(int fid) throws Exception{
+
+
+        String sql = " select SP_FileName,Ref_Cloud_ID,Raid_Ref,Remote_path from sp_file where F_ID="+fid+"";
+        Connection connection = connect();
+        Statement s = connection.createStatement();
+        ResultSet rs = s.executeQuery(sql);
+        List<MYSpFile> fileList = new ArrayList<MYSpFile>();
+
+        while(rs.next()){
+            MYSpFile myspFile = new MYSpFile();
+
+            myspFile.setName(rs.getString("SP_FileName"));
+            myspFile.setCloud(rs.getInt("Ref_Cloud_ID"));
+            myspFile.setRcloud(rs.getInt("Raid_Ref"));
+            myspFile.setRemotePath(rs.getString("Remote_path"));
+
+            fileList.add(myspFile);
+
+        }
+        return fileList;
+    }
+
+
 }

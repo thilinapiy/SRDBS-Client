@@ -2,6 +2,13 @@ package org.srdbs.client.Messenger;
 
 import org.apache.log4j.Logger;
 import org.srdbs.client.core.DbConnect;
+import org.srdbs.client.split.MYSpFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Secure and Redundant Data Backup System.
@@ -13,6 +20,7 @@ import org.srdbs.client.core.DbConnect;
 public class MessageHandler {
 
     public static Logger logger = Logger.getLogger("systemsLog");
+    public  static String Folder;
 
     public static String handleInit() {
 
@@ -123,11 +131,132 @@ public class MessageHandler {
      */
     public static String handleValidate(int fid) {
 
-        String msg = "Validation is not implemented.";
+        String msg="";
         // validate hash values of files and values from the database.
+        DbConnect dbConnect = new DbConnect();
+
+        try{
+
+            List<MYSpFile> listofloadsp = dbConnect.LoadSpQueryRemotePath(fid);
+            for(MYSpFile myspfile : listofloadsp){
+
+                Folder = myspfile.getRemotePath();
+            }
+
+
+        }
+        catch(Exception ex){
+
+            System.out.print("No Such Remote path");
+            logger.error("No Such Remote path");
+
+        }
+
+        String path="/home/chathuranga" +"/"+ Folder;
+        try{
+
+            List<MYSpFile> listofFiles = ReadSPFile(path);
+
+            if(HashCheck(listofFiles,fid)){
+
+                msg = "Validation is Succesfull.";
+                logger.info("Validation is Succesfull.");
+            }
+            else
+            {
+
+                msg = "Validation is not Successfull.";
+                logger.info("Validation is not Successfull.");
+
+            }
+
+        }
+        catch(Exception ex){
+
+            System.out.print("No Such Remote path");
+            logger.error("No Such Remote path");
+
+        }
+
+
 
 
         return msg;
 
+    }
+
+    public static boolean HashCheck(List<MYSpFile> listoffiles, int restoreFileID) throws Exception {
+
+        boolean Check = true;
+        DbConnect dbconnect = new DbConnect();
+        List<MYSpFile> listofFileSp = dbconnect.selectQuery(restoreFileID);
+
+        for (MYSpFile myfile : listoffiles) {
+            for (MYSpFile dbfile : listofFileSp) {
+                if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))
+                        && (myfile.getHash().equalsIgnoreCase(dbfile.getHash()))) {
+                    Check = true;
+                    logger.info("Pass : " + myfile.getName());
+
+                } else {
+                    Check = false;
+                    //restoreLog.error("Fail");
+                }
+            }
+        }
+
+        return Check;
+    }
+
+    public static List<MYSpFile> ReadSPFile(String path) throws Exception {
+
+        String Full_Path;
+        String Hash, date;
+
+        File folder = new File(path);
+        List<MYSpFile> fileList = new ArrayList<MYSpFile>();
+        for (File sysFile : folder.listFiles()) {
+            Full_Path = path + "/" + sysFile.getName();
+            Hash = getHash(Full_Path);
+            MYSpFile mySPFile = new MYSpFile();
+            mySPFile.setName(sysFile.getName());
+            mySPFile.setHash(Hash);
+            mySPFile.setFile(sysFile);
+            fileList.add(mySPFile);
+        }
+        return fileList;
+    }
+
+    public static String getHash(String sCompletePath) {
+
+        FileInputStream fis = null;
+        MessageDigest md = null;
+        String hashValue = "";
+        byte[] dataBytes = new byte[1024];
+        byte[] mdBytes = null;
+        int nRead = 0;
+
+
+        try {
+            md = MessageDigest.getInstance("MD5");
+            fis = new FileInputStream(sCompletePath);
+            while ((nRead = fis.read(dataBytes)) != -1) {
+                md.update(dataBytes, 0, nRead);
+            }
+            mdBytes = md.digest();
+            // convert the byte to hex format method 1
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < mdBytes.length; i++) {
+                sb.append(Integer.toString((mdBytes[i] & 0xff) + 0x100, 16)
+                        .substring(1));
+            }
+            logger.info("Digest in hex format :: " + sb.toString());
+            hashValue = sb.toString();
+            fis.close();
+        } catch (Exception e) {
+            logger.error("Error in hashing : " + e);
+        }
+
+        return hashValue;
     }
 }
