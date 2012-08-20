@@ -41,6 +41,7 @@ public class Core {
             sysconfig.load(new FileInputStream(Global.sysConfigPath));
             logger.info("Logs initialization done by using system configuration file.");
 
+            Global.ftpHome = sysconfig.getProperty("server.ftplocation");
             Global.serverPort = sysconfig.getProperty("server.port");
             Global.serverip = sysconfig.getProperty("server.domainname");
 

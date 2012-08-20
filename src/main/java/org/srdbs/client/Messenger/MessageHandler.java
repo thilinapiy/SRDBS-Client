@@ -2,6 +2,7 @@ package org.srdbs.client.Messenger;
 
 import org.apache.log4j.Logger;
 import org.srdbs.client.core.DbConnect;
+import org.srdbs.client.core.Global;
 import org.srdbs.client.split.MYSpFile;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import java.util.List;
 public class MessageHandler {
 
     public static Logger logger = Logger.getLogger("systemsLog");
-    public  static String Folder;
+    public static String Folder;
 
     public static String handleInit() {
 
@@ -131,58 +132,36 @@ public class MessageHandler {
      */
     public static String handleValidate(int fid) {
 
-        String msg="";
+        String msg = "";
         // validate hash values of files and values from the database.
         DbConnect dbConnect = new DbConnect();
 
-        try{
+        try {
 
             List<MYSpFile> listofloadsp = dbConnect.LoadSpQueryRemotePath(fid);
-            for(MYSpFile myspfile : listofloadsp){
+            for (MYSpFile myspfile : listofloadsp) {
 
                 Folder = myspfile.getRemotePath();
             }
-
-
-        }
-        catch(Exception ex){
-
-            System.out.print("No Such Remote path");
+        } catch (Exception ex) {
             logger.error("No Such Remote path");
-
         }
 
-        String path="/home/chathuranga" +"/"+ Folder;
-        try{
+        String path = Global.ftpHome + Global.fs + Folder;
+        try {
 
             List<MYSpFile> listofFiles = ReadSPFile(path);
-
-            if(HashCheck(listofFiles,fid)){
-
+            if (HashCheck(listofFiles, fid)) {
                 msg = "Validation is Succesfull.";
                 logger.info("Validation is Succesfull.");
-            }
-            else
-            {
-
+            } else {
                 msg = "Validation is not Successfull.";
                 logger.info("Validation is not Successfull.");
-
             }
-
-        }
-        catch(Exception ex){
-
-            System.out.print("No Such Remote path");
+        } catch (Exception ex) {
             logger.error("No Such Remote path");
-
         }
-
-
-
-
         return msg;
-
     }
 
     public static boolean HashCheck(List<MYSpFile> listoffiles, int restoreFileID) throws Exception {
@@ -204,7 +183,6 @@ public class MessageHandler {
                 }
             }
         }
-
         return Check;
     }
 

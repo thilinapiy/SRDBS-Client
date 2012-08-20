@@ -23,5 +23,8 @@ public class Global {
         
     public static String serverip;
     public static String serverPort;
+    
+    public static String ftpHome;
+    
 
 }
