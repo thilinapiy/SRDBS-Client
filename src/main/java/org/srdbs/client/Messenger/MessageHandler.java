@@ -156,7 +156,7 @@ public class MessageHandler {
                 logger.info("Validation is Succesfull.");
             } else {
                 msg = "Validation is not Successfull.";
-                logger.info("Validation is not Successfull.");
+                logger.error("Validation is not Successfull.");
             }
         } catch (Exception ex) {
             logger.error("No Such Remote path");
@@ -179,7 +179,7 @@ public class MessageHandler {
 
                 } else {
                     Check = false;
-                    //restoreLog.error("Fail");
+                    //logger.error("Fail : " + myfile.getName());
                 }
             }
         }

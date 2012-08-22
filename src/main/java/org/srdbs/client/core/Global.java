@@ -22,6 +22,7 @@ public class Global {
     public static String dbPassword;
         
     public static String serverip;
+    public static String cloudid;
     public static String serverPort;
     
     public static String ftpHome;

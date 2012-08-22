@@ -3,14 +3,9 @@ package org.srdbs.client.core;
 import org.apache.log4j.Logger;
 import org.srdbs.client.split.MYSpFile;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.io.File;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.*;
 
 /**
  * Secure and Redundant Data Backup System.
@@ -157,7 +152,7 @@ public class DbConnect {
 
     public List<MYSpFile> selectQuery(int fid) throws Exception {
 
-        String sql = " select SP_FileName,HashValue from sp_file where F_ID=" + fid + "";
+        String sql = "SELECT SP_FILENAME,HASHVALUE FROM SP_FILE WHERE F_ID=" + fid + "";
         Connection connection = connect();
         Statement s = connection.createStatement();
         ResultSet rs = s.executeQuery(sql);
@@ -165,8 +160,8 @@ public class DbConnect {
 
         while (rs.next()) {
             MYSpFile myspFile = new MYSpFile();
-            myspFile.setName(rs.getString("SP_FileName"));
-            myspFile.setHash(rs.getString("HashValue"));
+            myspFile.setName(rs.getString("SP_FILENAME"));
+            myspFile.setHash(rs.getString("HASHVALUE"));
             fileList.add(myspFile);
         }
         return fileList;
@@ -175,7 +170,8 @@ public class DbConnect {
     public List<MYSpFile> LoadSpQueryRemotePath(int fid) throws Exception{
 
 
-        String sql = " select SP_FileName,Ref_Cloud_ID,Raid_Ref,Remote_path from sp_file where F_ID="+fid+"";
+        String sql = "SELECT SP_FILENAME,REF_CLOUD_ID,RAID_REF,REMOTE_PATH FROM SP_FILE WHERE F_ID=" + fid
+                + " AND REF_CLOUD_ID=" + Global.cloudid;
         Connection connection = connect();
         Statement s = connection.createStatement();
         ResultSet rs = s.executeQuery(sql);
@@ -184,10 +180,10 @@ public class DbConnect {
         while(rs.next()){
             MYSpFile myspFile = new MYSpFile();
 
-            myspFile.setName(rs.getString("SP_FileName"));
-            myspFile.setCloud(rs.getInt("Ref_Cloud_ID"));
-            myspFile.setRcloud(rs.getInt("Raid_Ref"));
-            myspFile.setRemotePath(rs.getString("Remote_path"));
+            myspFile.setName(rs.getString("SP_FILENAME"));
+            myspFile.setCloud(rs.getInt("REF_CLOUD_ID"));
+            myspFile.setRcloud(rs.getInt("RAID_REF"));
+            myspFile.setRemotePath(rs.getString("REMOTE_PATH"));
 
             fileList.add(myspFile);
 

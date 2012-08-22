@@ -43,6 +43,7 @@ public class Core {
 
             Global.ftpHome = sysconfig.getProperty("server.ftplocation");
             Global.serverPort = sysconfig.getProperty("server.port");
+            Global.cloudid = sysconfig.getProperty("server.cloudid");
             Global.serverip = sysconfig.getProperty("server.domainname");
 
             Global.dbDriver = "com.mysql.jdbc.Driver";
