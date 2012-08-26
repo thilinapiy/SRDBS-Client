@@ -63,6 +63,7 @@ public class Core {
             logger.info("Connected to the database.");
         } catch (Exception e) {
             logger.error("Database connection error : " + e);
+            System.exit(-1);
         }
 
 
