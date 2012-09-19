@@ -130,6 +130,7 @@ public class MessageHandler {
      *
      *
      */
+
     public static String handleValidate(int fid) {
 
         String msg = "";
@@ -148,6 +149,7 @@ public class MessageHandler {
         }
 
         String path = Global.ftpHome + Global.fs + Folder;
+        System.out.print(path);
         try {
 
             List<MYSpFile> listofFiles = ReadSPFile(path);
@@ -167,24 +169,81 @@ public class MessageHandler {
     public static boolean HashCheck(List<MYSpFile> listoffiles, int restoreFileID) throws Exception {
 
         boolean Check = true;
+        int count =0;
         DbConnect dbconnect = new DbConnect();
         List<MYSpFile> listofFileSp = dbconnect.selectQuery(restoreFileID);
+        int SplitCountFile = dbconnect.SplitFileCount(restoreFileID);
 
-        for (MYSpFile myfile : listoffiles) {
-            for (MYSpFile dbfile : listofFileSp) {
-                if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))
-                        && (myfile.getHash().equalsIgnoreCase(dbfile.getHash()))) {
-                    Check = true;
-                    logger.info("Pass : " + myfile.getName());
+        if(SplitCountFile>count){
 
-                } else {
-                    Check = false;
-                    //logger.error("Fail : " + myfile.getName());
+            for (MYSpFile myfile : listoffiles) {
+
+                System.out.print(myfile.getName()+"from loop");
+
+                for (MYSpFile dbfile : listofFileSp) {
+
+                     if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))){
+
+                         if(myfile.getHash().equalsIgnoreCase(dbfile.getHash())){
+
+                                System.out.print(dbfile.getName()+"from if");
+                                Check = true;
+                                logger.info("Pass : " + myfile.getName());
+                                count++;
+
+                                 } else {
+
+                                    Check = false;
+                                    logger.error("Fail : " + myfile.getName());
+                                    //download fail data chunk
+                                }
+                     }
                 }
+
             }
         }
         return Check;
     }
+
+    public static boolean Download_HashCheck(List<MYSpFile> listoffiles, int restoreFileID) throws Exception {
+
+        boolean Check = true;
+        int count =0;
+        DbConnect dbconnect = new DbConnect();
+        List<MYSpFile> listofFileSp = dbconnect.selectQuery(restoreFileID);
+        int SplitCountFile = dbconnect.SplitFileCount(restoreFileID);
+
+        if(SplitCountFile>count){
+
+            for (MYSpFile myfile : listoffiles) {
+
+                System.out.print(myfile.getName()+"from loop");
+
+                for (MYSpFile dbfile : listofFileSp) {
+
+                    if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))){
+
+                        if(myfile.getHash().equalsIgnoreCase(dbfile.getHash())){
+
+                            System.out.print(dbfile.getName()+"from if");
+                            Check = true;
+                            logger.info("Pass : " + myfile.getName());
+                            count++;
+
+                        } else {
+
+                            Check = false;
+                            logger.error("Fail : " + myfile.getName());
+                            //download fail data chunk
+                        }
+                    }
+                }
+
+            }
+        }
+        return Check;
+    }
+
 
     public static List<MYSpFile> ReadSPFile(String path) throws Exception {
 

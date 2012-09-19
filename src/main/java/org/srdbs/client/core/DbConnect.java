@@ -191,5 +191,34 @@ public class DbConnect {
         return fileList;
     }
 
+    public int SplitFileCount(long fid) throws Exception {
+
+        int Count =0;
+        String sql = "Select count(F_ID) from sp_file where F_ID = '" +fid +"'";
+        Connection connection = connect();
+        PreparedStatement ps = connection.prepareStatement(sql);
+
+
+        //for (MYSpFile mySFile: fileList) {
+        // java.sql.Date sqlDate = new java.sql.Date(myFile.getcDate().getTime());
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            Count = rs.getInt(1);
+
+        }
+
+
+        ps.close();
+        connection.close();
+
+        return Count;
+
+
+    }
+
+
 
 }
