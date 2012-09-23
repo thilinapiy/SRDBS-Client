@@ -149,7 +149,6 @@ public class MessageHandler {
         }
 
         String path = Global.ftpHome + Global.fs + Folder;
-        System.out.print(path);
         try {
 
             List<MYSpFile> listofFiles = ReadSPFile(path);
@@ -161,71 +160,77 @@ public class MessageHandler {
                 logger.error("Validation is not Successfull.");
             }
         } catch (Exception ex) {
-            logger.error("No Such Remote path");
+            logger.error("No Such Remote path" + ex);
         }
         return msg;
     }
 
-    public static boolean HashCheck(List<MYSpFile> listoffiles, int restoreFileID) throws Exception {
+    public static boolean HashCheck(List<MYSpFile> listoffiles, int restoreFileID) {
 
         boolean Check = true;
-        int count =0;
+        int count = 0;
         DbConnect dbconnect = new DbConnect();
-        List<MYSpFile> listofFileSp = dbconnect.selectQuery(restoreFileID);
-        int SplitCountFile = dbconnect.SplitFileCount(restoreFileID);
 
-        if(SplitCountFile>count){
+        try {
+            List<MYSpFile> listofFileSp = dbconnect.selectQuery(restoreFileID);
+            int SplitCountFile = dbconnect.SplitFileCount(restoreFileID);
 
-            for (MYSpFile myfile : listoffiles) {
+            if (SplitCountFile > count) {
 
-                System.out.print(myfile.getName()+"from loop");
+                for (MYSpFile myfile : listoffiles) {
 
-                for (MYSpFile dbfile : listofFileSp) {
+                    System.out.print(myfile.getName() + "from loop");
 
-                     if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))){
+                    for (MYSpFile dbfile : listofFileSp) {
 
-                         if(myfile.getHash().equalsIgnoreCase(dbfile.getHash())){
+                        if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))) {
 
-                                System.out.print(dbfile.getName()+"from if");
+                            if (myfile.getHash().equalsIgnoreCase(dbfile.getHash())) {
+
+                                System.out.print(dbfile.getName() + "from if");
                                 Check = true;
                                 logger.info("Pass : " + myfile.getName());
                                 count++;
 
-                                 } else {
+                            } else {
 
-                                    Check = false;
-                                    logger.error("Fail : " + myfile.getName());
-                                    //download fail data chunk
-                                }
-                     }
+                                Check = false;
+                                logger.error("Fail : " + myfile.getName());
+                                //download fail data chunk
+                            }
+                        }
+                    }
+
                 }
-
             }
+        } catch (Exception ex) {
+            System.out.print("Hash" + ex);
         }
         return Check;
+
     }
 
     public static boolean Download_HashCheck(List<MYSpFile> listoffiles, int restoreFileID) throws Exception {
 
         boolean Check = true;
-        int count =0;
+        int count = 0;
         DbConnect dbconnect = new DbConnect();
         List<MYSpFile> listofFileSp = dbconnect.selectQuery(restoreFileID);
         int SplitCountFile = dbconnect.SplitFileCount(restoreFileID);
 
-        if(SplitCountFile>count){
+        if (SplitCountFile > count) {
 
             for (MYSpFile myfile : listoffiles) {
 
-                System.out.print(myfile.getName()+"from loop");
+                System.out.print(myfile.getName() + "from loop");
 
                 for (MYSpFile dbfile : listofFileSp) {
 
-                    if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))){
+                    if ((myfile.getName().equalsIgnoreCase(dbfile.getName()))) {
 
-                        if(myfile.getHash().equalsIgnoreCase(dbfile.getHash())){
+                        if (myfile.getHash().equalsIgnoreCase(dbfile.getHash())) {
 
-                            System.out.print(dbfile.getName()+"from if");
+                            System.out.print(dbfile.getName() + "from if");
                             Check = true;
                             logger.info("Pass : " + myfile.getName());
                             count++;
