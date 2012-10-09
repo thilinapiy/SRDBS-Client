@@ -1,4 +1,4 @@
-# Secure and Redundant Data Backup System
+# Secure and Redundant Data Backup System - Client Software
 
 ## Description
 
@@ -7,9 +7,9 @@
 
 ## Installation
 
-### Get source code
+### Get source code (Optional if you have the binary distribution. Skip this step.)
 
-		git clone https://github.com/thilinapiy/SRDBS.git
+		git clone git@github.com:thilinapiy/SRDBS-Client.git
 		or
 		Download a zip file of the code and unzip it.
 
@@ -28,24 +28,24 @@
 
         in Windows
             > set SRDBSCLIENT_HOME=<path to the installation>
-                 eg: SRDBSCLIENT_HOME=C:\Users\Thilina\Desktop\SRDBS-<version>
+                 eg: SRDBSCLIENT_HOME=C:\Users\Thilina\Desktop\SRDBS-Client-<version>
             > set path=%SRDBSCLIENT_HOME%\bin;%PATH%
 
         in Linux
             $ export SRDBSCLIENT_HOME=<path to the installation>
-                eg: export SRDBSCLIENT_HOME=/home/thilina/SRDBS-<version>
+                eg: export SRDBSCLIENT_HOME=/home/thilina/SRDBS-Client-<version>
             $ export PATH=$SRDBSCLIENT_HOME/bin:$PATH
 
 ### Create MySQL database
 
             > Create a separate database for the system on MySQL database.
-                - CREATE DATABASE SRDBSDB;
+                - CREATE DATABASE srdbsclientdb;
 
             > Create a user to the system.
-                - CREATE USER SRDBS;
+                - CREATE USER srdbsclient;
 
             > Grant privileges.
-                - GRANT ALL PRIVILEGES ON SRDBSDB.* TO 'SRDBS'@'127.0.0.1' IDENTIFIED BY 'password';
+                - GRANT ALL PRIVILEGES ON srdbsclientdb.* TO 'srdbsclient'@'127.0.0.1' IDENTIFIED BY 'password';
 
 ### Run the server
 
