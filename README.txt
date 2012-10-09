@@ -62,10 +62,10 @@ Installation
         mysql.dbPassword=password     [Database users Password]
 
         Server settings
-        server.cloudid=1                             [ID of the cloud {1,2,3}]
-        server.ftplocation=/home/chathuranga         [Root path of the FTP user connecting from the main server]
-        server.domainname=cloud1.serviceprovider.com [Domain name of the Cloud service accessible via the internet]
-        server.port=55555                            [Message service Port]
+        server.cloudid=1                        [ID of the cloud {1,2,3}]
+        server.ftplocation=/home/chathuranga    [Root path of the FTP user connecting from the main server]
+        server.domainname=cloud1.servicepro.com [Domain name of the Cloud service accessible via the internet]
+        server.port=55555                       [Message service Port]
 
     Run the server
 
