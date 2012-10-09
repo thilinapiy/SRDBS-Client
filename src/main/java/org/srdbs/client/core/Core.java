@@ -76,6 +76,7 @@ public class Core {
                     server.start();
                 } catch (Exception e) {
                     logger.info("Error in the messenger : " + e);
+                    System.exit(-1);
                 }
             }
         }
