@@ -55,17 +55,17 @@ Installation
         Update the "config/configure.conf" file.
 
         MySQL settings
-            mysql.dbIPAddress=127.0.0.1   [Give the mysql database IP address on the cloud]
-            mysql.dbName=srdbsclientdb    [Database name]
-            mysql.dbPort=3306             [Database port address]
-            mysql.dbUserName=srdbsclient  [Database user name]
-            mysql.dbPassword=password     [Database users Password]
+        mysql.dbIPAddress=127.0.0.1   [Give the mysql database IP address on the cloud]
+        mysql.dbName=srdbsclientdb    [Database name]
+        mysql.dbPort=3306             [Database port address]
+        mysql.dbUserName=srdbsclient  [Database user name]
+        mysql.dbPassword=password     [Database users Password]
 
         Server settings
-            server.cloudid=1                             [ID of the cloud {1,2,3}]
-            server.ftplocation=/home/chathuranga         [Root path of the FTP user connecting from the main server]
-            server.domainname=cloud1.serviceprovider.com [Domain name of the Cloud service accessible via the internet]
-            server.port=55555                            [Message service Port]
+        server.cloudid=1                             [ID of the cloud {1,2,3}]
+        server.ftplocation=/home/chathuranga         [Root path of the FTP user connecting from the main server]
+        server.domainname=cloud1.serviceprovider.com [Domain name of the Cloud service accessible via the internet]
+        server.port=55555                            [Message service Port]
 
     Run the server
 
